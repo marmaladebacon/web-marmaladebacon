@@ -39,7 +39,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { default as getLinks } from "@/utility/staticLinkData";
+import { default as getLinks } from "../utility/staticLinkData";
 import { TweenMax } from "gsap";
 import { isUndefined } from "lodash-es";
 import MouseTrackingLink from "@/components/MouseTrackingLink.vue"; // @ is an alias to /src
