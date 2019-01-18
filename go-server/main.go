@@ -10,7 +10,10 @@ func main() {
 
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
-	e.Static("/", "../vue-client/dist")
+	//e.Static("/", "../vue-client/dist")
+	//e.Static("/wp", "../vue-client/web-projects")
+	e.Use(middleware.Static("../vue-client/dist"))
+	e.Use(middleware.Static("../vue-client/web-projects"))
 
 	e.GET("/", func(c echo.Context) error {
 		return c.File("../vue-client/dist/index.html")

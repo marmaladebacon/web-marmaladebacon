@@ -8,6 +8,7 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
+Vue.config.devtools = true;
 
 new Vue({
   router,
