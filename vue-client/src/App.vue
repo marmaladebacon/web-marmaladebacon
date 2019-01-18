@@ -106,7 +106,7 @@ export default class App extends Vue {
       "," +
       endB +
       "))";
-    console.log(result);
+    
     return result;
   }
 }

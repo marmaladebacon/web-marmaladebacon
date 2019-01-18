@@ -58,8 +58,7 @@ export default class Home extends Vue {
   containerWidth: number = 0;
   containerHeight: number = 0;
 
-  @Prop()
-  public links!: { link: string; urlText: string }[];
+  links: { link: string; urlText: string }[] = [];
 
   created() {
     this.links = getLinks();
@@ -67,7 +66,7 @@ export default class Home extends Vue {
 
   mouseMoveHome(e: any) {
     this.mouseX = e.pageX;
-    this.mouseY = e.pageY;
+    this.mouseY = e.pageY;    
     try {
       this.containerWidth = (this.$refs.containerWindow as any).offsetWidth;
       this.containerHeight = (this.$refs.containerWindow as any).offsetHeight;
