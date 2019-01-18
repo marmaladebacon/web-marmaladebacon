@@ -13,7 +13,10 @@ func main() {
 	//e.Static("/", "../vue-client/dist")
 	//e.Static("/wp", "../vue-client/web-projects")
 	e.Use(middleware.Static("../vue-client/dist"))
-	e.Use(middleware.Static("../vue-client/web-projects"))
+	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
+		Root:  "../vue-client/web-projects",
+		HTML5: true,
+	}))
 
 	e.GET("/", func(c echo.Context) error {
 		return c.File("../vue-client/dist/index.html")
