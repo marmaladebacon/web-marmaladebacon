@@ -21,5 +21,5 @@ func main() {
 	e.GET("/", func(c echo.Context) error {
 		return c.File("../vue-client/dist/index.html")
 	})
-	e.Logger.Fatal(e.Start(":8000"))
+	e.Logger.Fatal(e.Start(":8080"))
 }
