@@ -8,10 +8,9 @@ import (
 func main() {
 	e := echo.New()
 
-	e.Use(middleware.Logger())
+	// enable when devel
+	// e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
-	//e.Static("/", "../vue-client/dist")
-	//e.Static("/wp", "../vue-client/web-projects")
 	e.Use(middleware.Static("../vue-client/dist"))
 	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
 		Root:  "../vue-client/web-projects",
