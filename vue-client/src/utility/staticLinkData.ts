@@ -19,6 +19,10 @@ export default function GetData() {
     makeItem(
       "/projects/herding-cats",
       "Projects//herding-cats [On-going effort]"
-    )
+    ),
+    makeItem(
+      "/projects/websocket-01",
+      "Projects//WebSocket experiment 01",
+    ),
   ];
 }

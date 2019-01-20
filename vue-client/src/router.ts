@@ -52,6 +52,8 @@ export default new Router({
             console.log('Mounted tf');
             return {
               projectSrc: "/tensorflow-linear-regression",
+              width: 950,
+              height: 650,
               desc_width: 20,
               desc_text: "This was a learning exercise i've learnt step by step from The Coding Train https://www.youtube.com/watch?v=dLp10CFIvxI . Would definitely invest more time in learning tensorflow js in the future."
             }
@@ -81,6 +83,19 @@ export default new Router({
               height: 650,
               desc_width: 25,
               desc_text: "This is currently my ongoing project. It incorporates flocking behaviour for the cats, and allows the cats to be influenced by external forces as well. Code wise i've been keeping the scope down and concentrating on the essential player input and core puzzling mechanics instead of adding more features. The overmap is meant to elicit some decision making from players, but it is not quite done yet. I'm not much of an artist so most of it is pixel art."
+            }
+          }
+        },
+        {
+          path: "websocket-01",
+          component: ProjectContainer,
+          props(route) {
+            return {
+              projectSrc: "/simple-websocket",
+              width: 950,
+              height: 650,
+              desc_width: 25,
+              desc_text: "Did do a bit of webSocket experimentation at my job but that had a number of restrictions thanks to the company. Giving it a bash here.",
             }
           }
         }
