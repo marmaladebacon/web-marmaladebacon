@@ -28,9 +28,10 @@ func (h *ChatHub) run() {
 	for {
 		select {
 		case client := <-h.register:
+			// Receive instances of ChatClient to register
 			h.clients[client] = true
 		case client := <-h.unregister:
-			//only unregister client if it's in our clients map of ChatHub
+			// Only unregister client if it's in our clients map of ChatHub
 			if _, ok := h.clients[client]; ok {
 				close(client.send)
 				delete(h.clients, client)

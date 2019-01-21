@@ -47,6 +47,8 @@ type ChatClient struct {
 // reads from this goRoutine
 func (client *ChatClient) readPump() {
 	defer func() {
+		// When forever look is broken out of (see below),
+		// unregister this client from chatHub and close the connection)
 		client.chatHub.unregister <- client
 		client.conn.Close()
 	}()
@@ -58,6 +60,7 @@ func (client *ChatClient) readPump() {
 		return nil
 	})
 	for {
+		//Read the message being sent from the client
 		_, message, err := client.conn.ReadMessage()
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
@@ -65,8 +68,11 @@ func (client *ChatClient) readPump() {
 			}
 			break
 		}
-
+		// replace all newlines with space,
+		// then remove all leading and trailing whitespace
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
+
+		// broadcast user message to the hub
 		client.chatHub.broadcast <- message
 	}
 }
