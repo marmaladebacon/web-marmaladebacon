@@ -51,8 +51,11 @@ func main() {
 	e.GET("/ws/hello", hello)
 
 	// Chat App Setup
+	//Make the instance of chatHub
 	chatHub := makeHub()
+	//run the chatHub as a goroutine
 	go chatHub.run()
+	//Await connections on <host>/ws/chat
 	e.GET("/ws/chat", func(c echo.Context) error {
 		// http.ResponseWriter, r *http.Request
 		r := c.Request()

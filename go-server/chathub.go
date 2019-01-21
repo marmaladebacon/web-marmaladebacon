@@ -1,5 +1,6 @@
 package main
 
+// ChatHub directs client traffic via different channels
 type ChatHub struct {
 	//Registered clients
 	clients map[*ChatClient]bool

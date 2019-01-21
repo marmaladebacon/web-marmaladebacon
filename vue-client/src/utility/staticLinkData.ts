@@ -24,5 +24,10 @@ export default function GetData() {
       "/projects/websocket-01",
       "Projects//WebSocket experiment 01",
     ),
+    makeItem(
+      "/projects/websocket-02",
+      "Projects//WebSocket experiment 02",
+    ),
+
   ];
 }

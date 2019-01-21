@@ -98,6 +98,19 @@ export default new Router({
               desc_text: "Did do a bit of webSocket experimentation at my job but that had a number of restrictions thanks to the company. Giving it a bash here.",
             }
           }
+        },
+        {
+          path: "websocket-02",
+          component: ProjectContainer,
+          props(route) {
+            return {
+              projectSrc: "/websocket-02",
+              width: 950,
+              height: 650,
+              desc_width: 25,
+              desc_text: "WebSocket chat experimentation, example based on the gorilla library demo.",
+            }
+          }
         }
       ]
     }
