@@ -9,10 +9,6 @@ import (
 	"github.com/labstack/echo/middleware"
 )
 
-var (
-	upgrader = websocket.Upgrader{}
-)
-
 func hello(c echo.Context) error {
 	ws, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
 	if err != nil {
@@ -53,6 +49,18 @@ func main() {
 	})
 
 	e.GET("/ws/hello", hello)
+
+	// Chat App Setup
+	chatHub := makeHub()
+	go chatHub.run()
+	e.GET("/ws/chat", func(c echo.Context) error {
+		// http.ResponseWriter, r *http.Request
+		r := c.Request
+		w := &c.Response.Writer
+		serveWsChat(chatHub, w, r)
+	})
+
+	// End
 
 	e.Logger.Fatal(e.Start(":8080"))
 
