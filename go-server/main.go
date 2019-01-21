@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo"
@@ -54,4 +55,20 @@ func main() {
 	e.GET("/ws/hello", hello)
 
 	e.Logger.Fatal(e.Start(":8080"))
+
+	//setup perFrame duration 30fps so 1 second / 30
+	perFrameDuration := time.Duration(time.Second / 30)
+	/*
+		'NewTicker returns a new Ticker containing a channel that will send the time with a period specified by the duration argument. It adjusts the intervals or drops ticks to make up for slow receivers. The duration d must be greater than zero; if not, NewTicker will panic. Stop the ticker to release associated resources.'
+
+		We're setting up our game loop here
+	*/
+	clk := time.NewTicker(perFrameDuration)
+
+	for {
+		select {
+		case <-clk.C:
+			//loop
+		}
+	}
 }
