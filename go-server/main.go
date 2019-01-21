@@ -55,9 +55,10 @@ func main() {
 	go chatHub.run()
 	e.GET("/ws/chat", func(c echo.Context) error {
 		// http.ResponseWriter, r *http.Request
-		r := c.Request
-		w := &c.Response.Writer
+		r := c.Request()
+		w := c.Response()
 		serveWsChat(chatHub, w, r)
+		return nil
 	})
 
 	// End
