@@ -13,6 +13,9 @@ func serveWsChat(chatHub *ChatHub, w http.ResponseWriter, r *http.Request) {
 	 2. The server inspects the request and if no errors are encountered, the server sends an HTTP response agreeing to upgrade the connection.
 	 3. Going forward, client and server now use the WebSocket protocol over the network connection.
 	*/
+	upgrader.CheckOrigin = func(r *http.Request) bool {
+		return true
+	}
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println(err)
