@@ -38,7 +38,7 @@
     }
     </style>
 </head>
-    
+
 <body>
   <div id="log"></div>
   <form id="form">
@@ -73,7 +73,15 @@
     }
 
     if(window.WebSocket){
-      connection = new WebSocket("ws://" + document.location.host + "/ws/chat");
+
+      const loc = window.location;
+      let uri = 'ws';
+
+      if (loc.protocol === 'https:') {
+        uri = 'wss';
+      }
+
+      connection = new WebSocket(uri + "://" + document.location.host + "/ws/chat");
 
       document.getElementById('connection-info').innerText = document.location.host;
 
