@@ -113,9 +113,12 @@
         }catch{
           var reader = new FileReader();
           reader.onload = function() {
-            let msg = JSON.parse(reader.result);
-            console.log(msg);
-            appendMsg(msg, appendLog);
+            const results = reader.result.split('\n');
+            for(let i = 0; i<results.length; i++){
+              let msg = JSON.parse(results[i]);
+              console.log(msg);
+              appendMsg(msg, appendLog);
+            }            
           }
           reader.readAsText(evt.data);       
         }
