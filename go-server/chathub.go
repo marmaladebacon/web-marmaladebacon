@@ -10,7 +10,7 @@ type ChatHub struct {
 	rooms map[string]map[*ChatClient]bool
 
 	//Inbound messages from the clients
-	broadcast chan []byte
+	broadcast chan *BroadcastMsg
 
 	//Register requests from the clients
 	register chan *ChatClient
@@ -19,14 +19,36 @@ type ChatHub struct {
 	unregister chan *ChatClient
 }
 
+// BroadcastMsg is for sending messages to the broadcast pipe
+type BroadcastMsg struct {
+	client   *ChatClient
+	category string
+	text     []byte
+}
+
 func makeHub() *ChatHub {
 	return &ChatHub{
-		broadcast:  make(chan []byte),
+		broadcast:  make(chan *BroadcastMsg),
 		register:   make(chan *ChatClient),
 		unregister: make(chan *ChatClient),
 		clients:    make(map[*ChatClient]bool),
 		rooms:      make(map[string]map[*ChatClient]bool),
 	}
+}
+
+func makeMsgFromClient(client *ChatClient, text string) *BroadcastMsg {
+	return &BroadcastMsg{
+		client: client,
+		text:   []byte(text),
+	}
+}
+
+func makeToClientMsg(b *BroadcastMsg) ToClientMsg {
+	if b.client != nil {
+		return ToClientMsg{Cat: "::", Text: string(b.text)}
+	}
+
+	return ToClientMsg{Cat: b.category, Text: string(b.text)}
 }
 
 func sendToClientMsg(client *ChatClient, category string, text string) {
@@ -53,12 +75,15 @@ func (chatHub *ChatHub) run() {
 			}
 		case message := <-chatHub.broadcast:
 			for client := range chatHub.clients {
-				select {
-				case client.send <- message:
-				default:
-					close(client.send)
-					delete(chatHub.clients, client)
-				}
+				temp := makeToClientMsg(message)
+				sendToClientMsg(client, temp.Cat, temp.Text)
+				/*
+					select {
+					case client.send <- makeToClientMsg(message):
+					default:
+						close(client.send)
+						delete(chatHub.clients, client)
+					}*/
 			}
 		}
 	}

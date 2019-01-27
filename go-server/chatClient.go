@@ -79,10 +79,12 @@ func (client *ChatClient) readPump() {
 		}
 		// replace all newlines with space,
 		// then remove all leading and trailing whitespace
-		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
+		textMessage := bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
+
+		broadcastMsg := BroadcastMsg{client: client, text: textMessage}
 
 		// broadcast user message to the hub
-		client.chatHub.broadcast <- message
+		client.chatHub.broadcast <- &broadcastMsg
 	}
 }
 
