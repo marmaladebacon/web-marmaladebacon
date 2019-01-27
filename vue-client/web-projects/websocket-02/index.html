@@ -47,6 +47,16 @@
       <span id="connection-info"></span>
   </form>
   <script>
+
+  function getBinarySize(string) {
+      return string.length;
+  }
+
+  function appendMsg(msg, appendLog){
+    let item = document.createElement('div');
+    item.innerText = msg.category+':'+msg.text;
+    appendLog(item);    
+  }
   window.onload = function () {
     let connection;
     let msg = document.getElementById('msg');
@@ -91,11 +101,23 @@
         appendLog(item);
       };
       connection.onmessage = (evt) => {
-        let messages = evt.data.split('\n');
-        for(let i = 0; i < messages.length; i++){
-          let item = document.createElement('div');
-          item.innerText = messages[i];
-          appendLog(item);
+        try{
+          let messages = evt.data.split('\n');
+          
+          for(let i = 0; i < messages.length; i++){
+            let item = document.createElement('div');
+            item.innerText = messages[i];            
+            appendLog(item);
+            console.log(getBinarySize(messages[i]))
+          }
+        }catch{
+          var reader = new FileReader();
+          reader.onload = function() {
+            let msg = JSON.parse(reader.result);
+            console.log(msg);
+            appendMsg(msg, appendLog);
+          }
+          reader.readAsText(evt.data);       
         }
       };
     }else {

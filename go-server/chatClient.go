@@ -25,17 +25,26 @@ var (
 )
 
 var upgrader = websocket.Upgrader{
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
+	ReadBufferSize:  2048,
+	WriteBufferSize: 2048,
+}
+
+// ToClientMsg is a struct that contains text and metaData for the chat
+type ToClientMsg struct {
+	Cat  string `json:"category"`
+	Text string `json:"text"`
 }
 
 // ChatClient handles websocket client connections
 type ChatClient struct {
+	room    string
 	chatHub *ChatHub
 	conn    *websocket.Conn
 
 	// Buffered channel of outBoundMessages
 	send chan []byte
+	// Buffered channel of new ToClientMsg
+	sendClientMsg chan ToClientMsg
 }
 
 // readPump pumps messages from the websocket connection to the hub
@@ -99,7 +108,7 @@ func (client *ChatClient) writePump() {
 				return
 			}
 
-			w, err := client.conn.NextWriter(websocket.TextMessage)
+			w, err := client.conn.NextWriter(websocket.BinaryMessage)
 			if err != nil {
 				return
 			}

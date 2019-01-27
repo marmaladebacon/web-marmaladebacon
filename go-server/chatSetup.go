@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
+	"time"
 )
 
 // serveWsChat handles websocket requests from peer
@@ -24,9 +26,10 @@ func serveWsChat(chatHub *ChatHub, w http.ResponseWriter, r *http.Request) {
 
 	// We create instances of the ChatClient type to manage the connection.
 	client := &ChatClient{
+		room:    "lobby",
 		chatHub: chatHub,
 		conn:    conn,
-		send:    make(chan []byte, 256),
+		send:    make(chan []byte, 1024),
 	}
 
 	//We send the instance of the client to the registration channel for chatHub
@@ -36,4 +39,21 @@ func serveWsChat(chatHub *ChatHub, w http.ResponseWriter, r *http.Request) {
 	// Start the client write and read goroutines to start read and write work for messages
 	go client.writePump()
 	go client.readPump()
+	//go client.writeClientMsgPump()
+
+	cWelcome := ToClientMsg{Cat: "admin", Text: "Welcome to marmaladebacon's chat hub!"}
+	bytes, berr := json.Marshal(cWelcome)
+	if berr != nil {
+		panic(berr)
+	}
+	client.send <- bytes
+
+	time.AfterFunc(2*time.Second, func() {
+		helpMsg := ToClientMsg{Cat: "admin", Text: "type /help for a list of commands"}
+		cbytes, err2 := json.Marshal(helpMsg)
+		if err2 != nil {
+			panic(err2)
+		}
+		client.send <- cbytes
+	})
 }
