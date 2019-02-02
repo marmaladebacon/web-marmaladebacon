@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"log"
 	"time"
 
@@ -77,14 +76,24 @@ func (client *ChatClient) readPump() {
 			}
 			break
 		}
-		// replace all newlines with space,
-		// then remove all leading and trailing whitespace
-		textMessage := bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
 
-		broadcastMsg := BroadcastMsg{client: client, text: textMessage}
+		handleMsg(message, client)
 
-		// broadcast user message to the hub
-		client.chatHub.broadcast <- &broadcastMsg
+		/*
+			s := string(message[:])
+			fmt.Println(s)
+			sArray := strings.Split(s, " ")
+			fmt.Println(string(sArray[0][0]))
+
+			// replace all newlines with space,
+			// then remove all leading and trailing whitespace
+			textMessage := bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
+
+			broadcastMsg := BroadcastMsg{client: client, text: textMessage}
+
+			// broadcast user message to the hub
+			client.chatHub.broadcast <- &broadcastMsg
+		*/
 	}
 }
 

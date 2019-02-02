@@ -48,15 +48,7 @@ func serveWsChat(chatHub *ChatHub, w http.ResponseWriter, r *http.Request) {
 	}
 	client.send <- bytes
 
-	time.AfterFunc(2*time.Second, func() {
+	time.AfterFunc(1200*time.Millisecond, func() {
 		sendToClientMsg(client, "admin", "type /help for a list of commands")
-		/*
-			helpMsg := ToClientMsg{Cat: "admin", Text: "type /help for a list of commands"}
-			cbytes, err2 := json.Marshal(helpMsg)
-			if err2 != nil {
-				panic(err2)
-			}
-			client.send <- cbytes
-		*/
 	})
 }
